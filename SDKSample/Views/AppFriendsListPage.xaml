@@ -1,0 +1,70 @@
+﻿<!--
+    //  Copyright 2011年 Renren Inc. All rights reserved.
+    //  - Powered by Team Pegasus. -
+-->
+    
+    <phone:PhoneApplicationPage 
+    x:Class="SDKSample.AppFriendsListPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="480"
+    shell:SystemTray.IsVisible="False">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" >
+        <Grid.Background>
+            <ImageBrush ImageSource="../Resource/Images/singleBackgroundLight.png"/>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+            <TextBlock x:Name="ApplicationTitle" Text="RenRen" Style="{StaticResource PhoneTextNormalStyle}"  Foreground ="LightBlue"/>
+            <TextBlock x:Name="PageTitle" Text="应用好友列表" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"  Foreground ="LightBlue"/>
+        </StackPanel>
+
+        <!--ContentPanel - place additional content here-->
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <Button Content="查询id" Height="54" HorizontalAlignment="Left" Margin="12,24,0,0" Name="InquiryID_Btn" VerticalAlignment="Top" Width="141"  Style="{StaticResource CubeButtonStyle}" Click="InquiryID_Btn_Click" />
+            <Button Content="查询详情" Height="54" HorizontalAlignment="Right" Margin="0,24,7,0" Name="BasicInfo_Btn" Style="{StaticResource CubeButtonStyle}" VerticalAlignment="Top" Width="174" Click="BasicInfo_Btn_Click" />
+            <ListBox Height="517" VerticalAlignment="Top" Width="449"  
+                     HorizontalAlignment="Left" x:Name="AppFriendIDList_LBox" 
+                     Margin="10,90,0,0"
+                     Foreground ="#015EAC" />
+            <ListBox Height="517" VerticalAlignment="Top" Width="449"  
+                     HorizontalAlignment="Left" x:Name="AppFriendList_LBox" 
+                     Margin="10,90,0,0"
+                     Foreground ="#015EAC" />
+        </Grid>
+
+        <Rectangle Name="disableRect"  Grid.Row="1" Grid.RowSpan="4" Grid.ColumnSpan="1"                     
+                Fill="#80000000"                    
+                Visibility="Collapsed" />
+        <StackPanel x:Name="ProgressPanel" Grid.Row="1"  HorizontalAlignment="Right"
+                    Orientation="Horizontal"   Margin="0,84,0,305" Width="480">
+            <ProgressBar  Name="down_Bar"   Visibility="Collapsed"   IsIndeterminate="True"                                                 
+                Width="350"/>
+            <TextBlock x:Name="down_TBlk" Width="140" Text="数据读取中..." Foreground="{StaticResource PhoneAccentBrush}" VerticalAlignment="Center"
+                        Visibility="Collapsed" Height="30" />
+        </StackPanel>
+    </Grid>
+
+    
+    <!--Sample code showing usage of ApplicationBar-->
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar Mode="Minimized" IsVisible="True" Opacity ="0" ForegroundColor="#015EAC"   IsMenuEnabled="False">
+            <shell:ApplicationBarIconButton IconUri="/Resource/Images/appbar.edit.rest.png" Text="Log" Click="Log_Btn_Clicked"/>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+</phone:PhoneApplicationPage>

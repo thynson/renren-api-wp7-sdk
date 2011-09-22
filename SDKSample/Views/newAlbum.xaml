@@ -1,0 +1,57 @@
+﻿<!--
+    //  Copyright 2011年 Renren Inc. All rights reserved.
+    //  - Powered by Team Pegasus. -
+-->
+    
+    <phone:PhoneApplicationPage 
+    x:Class="SDKSample.newAlbum"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="480"
+    shell:SystemTray.IsVisible="False">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" >
+        <Grid.Background>
+            <ImageBrush ImageSource="../Resource/Images/singleBackgroundLight.png"/>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+            <TextBlock x:Name="ApplicationTitle" Text="RenRen" Style="{StaticResource PhoneTextNormalStyle}"  Foreground ="LightBlue"/>
+            <TextBlock x:Name="PageTitle" Text="新建相册" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"  Foreground ="LightBlue"/>
+        </StackPanel>
+
+        <!--ContentPanel - place additional content here-->
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <TextBlock HorizontalAlignment="Left" Margin="0,23,0,541" Name="textBlock1" Text="相册名称" Width="130"  Foreground ="#015EAC" />
+            <TextBox Height="72" HorizontalAlignment="Left" Margin="0,45,0,0" Name="tb_name" Text="" VerticalAlignment="Top" Width="371"  BorderBrush ="LightBlue"  Foreground ="#015EAC"/>
+            <Button Content="创建" Height="54" HorizontalAlignment="Left" Margin="14,356,0,0" Name="Upload_Btn" VerticalAlignment="Top" Width="141"    Style="{StaticResource CubeButtonStyle}" Click="Upload_Btn_Click" />
+            <TextBlock Height="30" HorizontalAlignment="Left" Margin="14,434,0,0" Name="textBlock3" Text="返回结果" VerticalAlignment="Top"  Foreground ="#015EAC" />
+            <TextBlock Height="131" HorizontalAlignment="Left" Margin="14,470,0,0" Name="tb_result" Text="" VerticalAlignment="Top" Width="421"  Foreground ="#015EAC" />
+            <TextBlock Foreground="#015EAC" Height="43" HorizontalAlignment="Left" Margin="0,111,0,0" Name="textBlock2" Text="相册地点" VerticalAlignment="Top" Width="130" />
+            <TextBlock Foreground="#015EAC" Height="43" HorizontalAlignment="Left" Margin="0,211,0,0" Name="textBlock5" Text="相册描述（不超过140字）" VerticalAlignment="Top" Width="228" />
+            <TextBox Foreground="#015EAC" BorderBrush ="LightBlue" Height="72" HorizontalAlignment="Left" Margin="0,146,0,0" Name="textBox2" Text="" VerticalAlignment="Top" Width="371" />
+            <TextBox Foreground="#015EAC" BorderBrush ="LightBlue" Height="72" HorizontalAlignment="Left" Margin="0,233,0,0" Name="textBox3" Text="" VerticalAlignment="Top" Width="371" />
+        </Grid>
+    </Grid>
+
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar Mode="Minimized" IsVisible="True" Opacity ="0" ForegroundColor="#015EAC"   IsMenuEnabled="False">
+            <shell:ApplicationBarIconButton IconUri="/Resource/Images/appbar.edit.rest.png" Text="Log" Click="Log_Btn_Clicked"/>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+</phone:PhoneApplicationPage>
