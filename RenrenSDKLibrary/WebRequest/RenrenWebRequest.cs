@@ -67,7 +67,7 @@ namespace RenrenSDKLibrary
                     request.Method = HttpMethod.POST.ToString();
                     request.ContentType = "application/x-www-form-urlencoded;charset=utf-8";
                     //平台统计用
-                    request.UserAgent = "Renren Windows Phone SDK v1.0 (windows phone; windows phone 7.1)";
+                    request.UserAgent = "Renren Windows Phone SDK v2.0 (windows phone; windows phone 7.1)";
                     state.request = request;
                     state.paras = paras;
 

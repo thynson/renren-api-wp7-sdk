@@ -40,8 +40,7 @@ namespace RenrenSDKLibrary
         }
 
         #region Log
-        static string LogDirectory = "logstore";
-        static string LogUri = "logstore\\Log.txt";
+        static string LogUri = "Log.txt";
 
           /// <summary>
           /// 参数为string
@@ -50,30 +49,12 @@ namespace RenrenSDKLibrary
         public static void WriteLog(string log)
         {
             IsolatedStorageFile logstore = IsolatedStorageFile.GetUserStoreForApplication();
-            try
+            
+            using (StreamWriter writeFile = new StreamWriter(new IsolatedStorageFileStream(LogUri, FileMode.Create, FileAccess.Write
+                , logstore)))
             {
-                //如果路径不存在，则创建路径
-                if (!logstore.DirectoryExists(LogDirectory))
-                {
-                    logstore.CreateDirectory(LogDirectory);
-                }
-                //如果文件不存在，则创建文件
-                if (!logstore.FileExists(LogUri))
-                {
-                    logstore.CreateFile(LogUri);
-                }
-
-                StreamWriter writeFile = new StreamWriter(new IsolatedStorageFileStream(LogUri,
-                    FileMode.Append, logstore));
-
-    
-                writeFile.Write(log);
-                writeFile.Write("\r\n");
+                writeFile.WriteLine(log);
                 writeFile.Close();
-            }
-            catch
-            {
-                return;
             }
         }
 
@@ -99,25 +80,22 @@ namespace RenrenSDKLibrary
         /// </summary>
         /// <returns> 读到的log，为string </returns>
         public  static string ReadLog()
-          {
-              using (IsolatedStorageFile logstore = IsolatedStorageFile.GetUserStoreForApplication())
-              {
-                  string Logread = null;
-                  if (logstore.FileExists(LogUri))
-                  {
-                      using (IsolatedStorageFileStream storeStream = new IsolatedStorageFileStream(LogUri, FileMode.Open, logstore))
-                      {
-                          using (StreamReader sr = new StreamReader(storeStream))
-                          {
-                              Logread = sr.ReadToEnd();
-                              sr.Close();
-                          }
-                          storeStream.Close();
-                      }
-                  }
-                  return Logread;
-              }
-          }
+        {
+              
+            IsolatedStorageFile logstore = IsolatedStorageFile.GetUserStoreForApplication();
+
+            if (!logstore.FileExists(LogUri))
+            {
+                return null;
+            }
+
+            IsolatedStorageFileStream storeStream = logstore.OpenFile(LogUri, FileMode.Open, FileAccess.Read);
+
+            using (StreamReader reader = new StreamReader(storeStream))
+            {
+                return reader.ReadLine();
+            }
+        }
 
         /// <summary>
         /// clean log
@@ -249,6 +227,45 @@ namespace RenrenSDKLibrary
             sbList.Append(ConstantValue.SecretKey);
             return ApiHelper.MD5Encrpt(sbList.ToString());
         }
+
+        /// <summary>
+        /// 不区分大小写,获得querysring中的值
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static string GetQueryString(Uri url, string key)
+        {
+            string retVal = "";
+            string query = "";
+            string abUrl = url.Fragment;
+
+            if (abUrl != "")
+            {
+                abUrl = Uri.UnescapeDataString(abUrl);
+                query = abUrl.Replace("#", "");
+            }
+            else
+            {
+                abUrl = url.AbsoluteUri;
+                abUrl = Uri.UnescapeDataString(abUrl);
+                query = abUrl.Substring(abUrl.IndexOf("?") + 1);
+                query = query.Replace("?", "");
+            }
+
+            string[] querys = query.Split('&');
+            foreach (string qu in querys)
+            {
+                string[] vals = qu.Split('=');
+                if (vals[0].ToString().ToLower() == key.ToLower())
+                {
+                    retVal = vals[1].ToString();
+                    break;
+                }
+            }
+            return retVal;
+        }
+        
         #endregion
 
     }

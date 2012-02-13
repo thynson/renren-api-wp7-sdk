@@ -34,17 +34,15 @@ namespace RenrenSDKLibrary
         /// <returns>服务器响应数据</returns>
         public void CallMethod(List<APIParameter> paras, List<APIParameter> files)
         {
-            // 自动从APIKey中得到SessionKey
-            string session_key = RenrenSDK.RenrenInfo.userInfo.session_key;
+            string accessToken = RenrenSDK.RenrenInfo.tokenInfo.access_token;
+            string callID = DateTime.Now.Millisecond.ToString();
 
-            if (session_key == "") throw new ArgumentNullException("session_key required");
             if (paras == null || paras.Count == 0) throw new ArgumentNullException("paras required");
             if (files == null || files.Count == 0) throw new ArgumentNullException("files required");
 
-            paras.Add(new APIParameter("api_key", ConstantValue.ApiKey));
             paras.Add(new APIParameter("call_id", DateTime.Now.Millisecond.ToString()));
+            paras.Add(new APIParameter("access_token", accessToken));
             paras.Add(new APIParameter("v", "1.0"));
-            paras.Add(new APIParameter("session_key", session_key));
             paras.Add(new APIParameter("format", "JSON"));
             string strSig = ApiHelper.CalSig(paras);
             if (strSig == "")

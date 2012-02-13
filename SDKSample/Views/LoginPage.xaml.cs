@@ -30,33 +30,15 @@ namespace SDKSample
 
         void LoginPage_Loaded(object sender, RoutedEventArgs e)
         {
-            if (setting.Contains("name") && setting.Contains("passwd"))
-            {
-                Name_TBox.Text = setting["name"].ToString();
-                Passwd_TBox.Password = setting["passwd"].ToString();
-            }
-        }
-
-        private void Save_CBox_Checked(object sender, RoutedEventArgs e)
-        {
-
         }
 
         private void Login_Btn_Click(object sender, RoutedEventArgs e)
         {
-            if (Save_CBox.IsChecked == true)
-            {
-                if (setting.Contains("name") == false && setting.Contains("passwd") == false)
-                {
-                    setting.Add("name", Name_TBox.Text);
-                    setting.Add("passwd", Passwd_TBox.Password);
-                }
-            }
             Login_Btn.Visibility = Visibility.Collapsed;
             login_Bar.Visibility = Visibility.Visible;
             login_TBlk.Visibility = Visibility.Visible;
 
-            api.Login(Name_TBox.Text, Passwd_TBox.Password, "510991aed48945e4ae48f4481b33859c", renren_LoginCompletedHandler);
+            api.Login(Name_TBox.Text, Passwd_TBox.Password, renren_LoginCompletedHandler);
 
         }
 
@@ -73,7 +55,7 @@ namespace SDKSample
 
             if (e.Result == "success")
             {
-                NavigationService.Navigate(new Uri("/Views/FeaturePage.xaml", UriKind.Relative));
+                NavigationService.Navigate(new Uri("/Views/FeaturePage.xaml?prepage=passwordpage", UriKind.Relative));
             }
         }
 

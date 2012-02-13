@@ -28,9 +28,9 @@ namespace RenrenSDKLibrary
         /// <param name="sessionKey"></param>
         /// <param name="userSecretKey"></param>
         /// <param name="userId"></param>
-        public void GetAlbumList(string sessionKey, string userSecretKey, int userId, DownloadStringCompletedHandler callback)
+        public void GetAlbumList(int userId, DownloadStringCompletedHandler callback)
         {
-            GetAlbumList(sessionKey, userSecretKey, userId,callback, -1, -1, null );
+            GetAlbumList(userId,callback, -1, -1, null );
         }
         /// <summary>
         /// 获取指定用户相册列表 可扩展
@@ -40,13 +40,15 @@ namespace RenrenSDKLibrary
         /// <param name="userId"></param>
         /// <param name="page"></param>
         /// <param name="pageSize"></param>
-        public void GetAlbumList(string sessionKey, string userSecretKey, int userId, DownloadStringCompletedHandler callback, int page, int count, string aids)
+        public void GetAlbumList(int userId, DownloadStringCompletedHandler callback, int page, int count, string aids)
         {
+            string accessToken = RenrenSDK.RenrenInfo.tokenInfo.access_token;
+            string callID = String.Format("{0}", DateTime.Now.Second);
+
             List<APIParameter> parameters = new List<APIParameter>() { new APIParameter("method", Method.GetAlbums) };
-            parameters.Add(new APIParameter("api_key", ConstantValue.ApiKey));
-            parameters.Add(new APIParameter("secret_key", ConstantValue.SecretKey));            
+            parameters.Add(new APIParameter("access_token", accessToken));
+            parameters.Add(new APIParameter("call_id", callID));            
             parameters.Add(new APIParameter("v", "1.0"));
-            parameters.Add(new APIParameter("session_key", sessionKey));
             parameters.Add(new APIParameter("uid", userId.ToString()));
             parameters.Add(new APIParameter("format", "JSON"));
 

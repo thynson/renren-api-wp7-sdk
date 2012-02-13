@@ -79,7 +79,7 @@ namespace RenrenSDKLibrary
         /// <summary>
         /// 获取当前用户相册列表
         /// </summary>
-        public void GetAlbums(string sessionKey, string userSecretKey, int uid, int page, int count, string aids)
+        public void GetAlbums(int uid, int page, int count, string aids)
         {
 
             if (ConstantValue.ApiKey == null)
@@ -88,7 +88,7 @@ namespace RenrenSDKLibrary
                 return;
             }
 
-            getAlbumsRequest.GetAlbumList(sessionKey, userSecretKey, uid, DownloadStringCompleted, page, count, aids);
+            getAlbumsRequest.GetAlbumList(uid, DownloadStringCompleted, page, count, aids);
         }
 
         /// <summary>

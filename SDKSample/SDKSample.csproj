@@ -101,11 +101,17 @@
     <Compile Include="Views\newAlbum.xaml.cs">
       <DependentUpon>newAlbum.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\RestAPIPage.xaml.cs">
+      <DependentUpon>RestAPIPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\UploadPhoto.xaml.cs">
       <DependentUpon>UploadPhoto.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UserInfoPage.xaml.cs">
       <DependentUpon>UserInfoPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WebControlLoginPage.xaml.cs">
+      <DependentUpon>WebControlLoginPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -153,6 +159,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\RestAPIPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\UploadPhoto.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -160,6 +170,10 @@
     <Page Include="Views\UserInfoPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\WebControlLoginPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -177,6 +191,7 @@
     <Resource Include="Resource\Images\singleBackgroundDark.png" />
     <Resource Include="Resource\Images\singleBackgroundLight.png" />
     <Resource Include="Resource\Images\head.jpg" />
+    <Resource Include="Resource\Images\appbar.cancel.rest.png" />
     <Content Include="Resource\Images\appbar.edit.rest.png" />
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>

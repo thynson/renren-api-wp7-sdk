@@ -26,9 +26,5 @@ namespace RenrenSDKLibrary
 
             return result;
         }
-
-    }
-
-       
-    
+    } 
 }

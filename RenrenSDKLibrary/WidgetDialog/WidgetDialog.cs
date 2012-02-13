@@ -138,30 +138,6 @@ namespace RenrenSDKLibrary.WidgetDialog
             RemoveBrowser();
         }
 
-        /// <summary>
-        /// 不区分大小写,获得querysring中的值
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        protected string getQuerystring(Uri url, string key)
-        {
-            string retVal = "";
-            string abUrl = url.AbsoluteUri;
-            string query = abUrl.Substring(abUrl.IndexOf("?") + 1);
-            query = query.Replace("?", "");
-            string[] querys = query.Split('&');
-            foreach (string qu in querys)
-            {
-                string[] vals = qu.Split('=');
-                if (vals[0].ToString().ToLower() == key.ToLower())
-                {
-                    retVal = vals[1].ToString();
-                    break;
-                }
-            }
-            return retVal;
-        }
         #endregion
     }
 }

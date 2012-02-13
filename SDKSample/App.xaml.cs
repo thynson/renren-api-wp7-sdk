@@ -81,7 +81,7 @@ namespace SDKSample
                 // and consume battery power when the user is not using the phone.
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
-            api = new RenrenAPI("5c825fb9b30c494cb48e674e21139f20");
+            api = new RenrenAPI("YOUR APP ID", "YOUR API KEY", "YOUR SECRET");
             api.Cleanlog();
         }
 

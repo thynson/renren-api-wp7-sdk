@@ -144,8 +144,8 @@ namespace RenrenSDKLibrary
                 {
                     sArray.Add(Convert.ToInt32(aUid));
                 }
-                getUserInfoRequest.GetUserInfo(sArray, scope,
-                    DownloadStringCompleted);
+                getUserInfoRequest.GetUserInfo(scope,
+                    DownloadStringCompleted, sArray);
                 currentState = TGetUserInfoType.KGetUserInfo;
             }
         }

@@ -34,6 +34,18 @@ namespace SDKSample
 
         }
 
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+            if (NavigationContext.QueryString.ContainsKey("prepage") 
+                && ((NavigationContext.QueryString["prepage"] == "webcontrolpage")
+                || (NavigationContext.QueryString["prepage"] == "passwordpage")))
+            {
+                NavigationService.RemoveBackEntry();
+            }
+        }
+
         // Load data for the ViewModel Items
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
@@ -48,6 +60,14 @@ namespace SDKSample
             NavigationService.Navigate(new Uri("/Views/LogPage.xaml", UriKind.Relative));
         }
 
+        private void LogOut_Btn_Clicked(object sender, EventArgs e)
+        {
+            if (NavigationService.CanGoBack)
+            {
+                api.LogOut();
+                NavigationService.GoBack();
+            }
+        }
 
         private void OneTapPublishListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -155,25 +175,26 @@ namespace SDKSample
                 {
                     case 0:
                         {
-                            NewfeedDialogRequired paramRequired = new NewfeedDialogRequired();
-                            NewfeedDialogOptional paramOptional = new NewfeedDialogOptional();
-                            paramRequired.app_id = "156729";
-                            paramRequired.description = "我的测试";
-                            paramRequired.name = "创建新鲜事";
-                            paramRequired.redirect_uri = "http://apps.renren.com/demo_app";
-                            paramRequired.url = "http://apps.renren.com/demo_app";
+                            List<APIParameter> param= new List<APIParameter>();
+                            param.Add(new APIParameter("url","http://dev.renren.com"));
+                            param.Add(new APIParameter("name", "人人网开放平台"));
+                            param.Add(new APIParameter("action_name","访问我们"));
+                            param.Add(new APIParameter("action_link","http://dev.renren.com"));
+                            param.Add(new APIParameter("description","来自人人网Windows Phone 7 SDK"));
+                            param.Add(new APIParameter("caption","欢迎使用人人网SDK"));
+                            param.Add(new APIParameter("image","http://hdn.xnimg.cn/photos/hdn421/20090923/1935/head_1Wmz_19242g019116.jpg"));
 
-                            paramOptional.action_link = "http://apps.renren.com/demo_app";
-                            paramOptional.action_name = "";
-                            paramOptional.caption = "自定义";
-                            paramOptional.image = "http://xnimg.connect.renren.com/app_full_proxy.do?src=http://pic.yupoo.com/dapenti/AFtF7sVF/Dp6WT.jpg";
-
-                            api.FeedDialog(this, paramRequired, paramOptional, NewfeedDialogComplete);
+                            api.WidgetDialog(this, WidgetDialogType.FeedDialog, param, WidgetDialogComplete);
                         }
                         break;
 
                     case 1:
-                        api.LikeDialog(this, "http://app.renren.com/", "156729", NewfeedDialogComplete);
+                        {
+                            List<APIParameter> param = new List<APIParameter>();
+                            param.Add(new APIParameter("like_url","http://hecao.info/like.html"));
+
+                            api.WidgetDialog(this,WidgetDialogType.LikeDialog,param,WidgetDialogComplete);
+                        }
                         break;
 
                     case 2:
@@ -211,7 +232,21 @@ namespace SDKSample
                 MessageBox.Show(e.Error.Message);
         }
 
-        void NewfeedDialogComplete(object sender, RenrenSDKLibrary.DownloadStringCompletedEventArgs e)
+        private void RestAPIListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (RestAPIListBox.SelectedIndex != -1)
+            {
+                switch (RestAPIListBox.SelectedIndex)
+                {
+                    case 0://发表日志
+                        NavigationService.Navigate(new Uri("/Views/RestAPIPage.xaml", UriKind.RelativeOrAbsolute));
+                        break;
+                }
+            }
+            RestAPIListBox.SelectedIndex = -1;
+        }
+
+        void WidgetDialogComplete(object sender, RenrenSDKLibrary.DownloadStringCompletedEventArgs e)
         {
             if (e.Error != null)
                 MessageBox.Show(e.Error.Message);

@@ -29,7 +29,9 @@ namespace SDKSample
             if (tb_name.Text == "")
                 MessageBox.Show("请输入相册名称");
             else
-                App.api.CreateAlbum(CreateAlbumCompletedCallback,tb_name.Text);
+            {
+                App.api.CreateAlbum(CreateAlbumCompletedCallback, tb_name.Text);
+            }
         }
         //显示新相册aid
         private void CreateAlbumCompletedCallback(object sender, CreateAlbumCompletedEventArgs e)

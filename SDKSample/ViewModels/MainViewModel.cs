@@ -29,6 +29,7 @@ namespace SDKSample
             this.DialogInfo = new ObservableCollection<ItemViewModel>();
             this.PublishInfo = new ObservableCollection<ItemViewModel>();
             this.OneTapPubllish = new ObservableCollection<ItemViewModel>();
+            this.RestAPIInfo = new ObservableCollection<ItemViewModel>();
         }
 
         /// <summary>
@@ -40,6 +41,7 @@ namespace SDKSample
         public ObservableCollection<ItemViewModel> PublishInfo { get; private set; }
         public ObservableCollection<ItemViewModel> OneTapPubllish { get; private set; }
         public ObservableCollection<ItemViewModel> DialogInfo { get; private set; }
+        public ObservableCollection<ItemViewModel> RestAPIInfo { get; private set; }
 
         private string _sampleProperty = "Sample Runtime Property Value";
         /// <summary>
@@ -98,6 +100,7 @@ namespace SDKSample
             this.DialogInfo.Add(new ItemViewModel() { LineOne = "like Dialog", LineTwo = "LikeDialog" });
             //this.DialogInfo.Add(new ItemViewModel() { LineOne = "Friends Dialog*", LineTwo = "Habitant incertis" });
 
+            this.RestAPIInfo.Add(new ItemViewModel() { LineOne = "发表日志",LineTwo = "blog.addBlog"});
 
             this.IsDataLoaded = true;
         }

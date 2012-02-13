@@ -31,9 +31,8 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBox Name ="Name_TBox" Height="72" HorizontalAlignment="Left" Margin="10,186,0,0" Text="sunzhenshan@live.cn" FontSize="20"  VerticalAlignment="Top" Width="460" Foreground="#015EAC"  MouseLeftButtonDown="Name_TBox_MouseLeftButtonDown" />
-        <PasswordBox Name ="Passwd_TBox" Grid.Row="1" Height="72" HorizontalAlignment="Left" Margin="12,0,0,0"  Password="555800" FontSize="20"  VerticalAlignment="Top" Width="460" Foreground ="#015EAC" MouseLeftButtonDown="Passwd_TBox_MouseLeftButtonDown" />
-        <CheckBox Name="Save_CBox" Content="保存账号，下次自动登陆" Grid.Row="1" Height="72" HorizontalAlignment="Left" Margin="12,78,0,0"  VerticalAlignment="Top" Checked="Save_CBox_Checked" />
+        <TextBox Name ="Name_TBox" Height="72" HorizontalAlignment="Left" Margin="89,186,0,0" Text="" FontSize="20"  VerticalAlignment="Top" Width="381" Foreground="#015EAC"  MouseLeftButtonDown="Name_TBox_MouseLeftButtonDown" />
+        <PasswordBox Name ="Passwd_TBox" Grid.Row="1" Height="72" HorizontalAlignment="Left" Margin="89,0,0,0"  Password="" FontSize="20"  VerticalAlignment="Top" Width="381" Foreground ="#015EAC" MouseLeftButtonDown="Passwd_TBox_MouseLeftButtonDown" />
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="ProgressPanel" Grid.Row="1"  HorizontalAlignment="Right"
                     Orientation="Horizontal"   Margin="0,156,0,298" Width="480">
@@ -43,7 +42,8 @@
             <TextBlock x:Name="login_TBlk" Width="100" Text="登录中..." Foreground="{StaticResource PhoneAccentBrush}" VerticalAlignment="Center"
                         Visibility="Collapsed"/>
         </StackPanel>
-
+        <TextBlock Height="30" HorizontalAlignment="Left" Margin="31,204,0,0" Name="textBlock1" Text="账号" VerticalAlignment="Top" />
+        <TextBlock Height="30" HorizontalAlignment="Left" Margin="31,18,0,0" Name="textBlock2" Text="密码" VerticalAlignment="Top" Grid.Row="1" />
         <!--ContentPanel - place additional content here-->
        
     </Grid>

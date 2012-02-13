@@ -26,7 +26,7 @@ namespace RenrenSDKLibrary
     {
         #region Members
         LoginRequest loginRequest;
-        UserInfo userInfo;
+        TokenInfo tokenInfo;
         enum TLoginState
         {
             KGetToken,
@@ -49,7 +49,7 @@ namespace RenrenSDKLibrary
         public LoginBS()
         {
             loginRequest = new LoginRequest();
-            userInfo = new UserInfo();
+            tokenInfo = new TokenInfo();
         }
 
         public void CleanLoginEvent()
@@ -67,11 +67,7 @@ namespace RenrenSDKLibrary
                         DecoderTokenInfo(resultString);
                         break;
                     }
-                case TLoginState.KGetSessionKey:
-                    {
-                        DecoderSessionKey(resultString);
-                        break;
-                    }
+
                 case TLoginState.KGetUserInfo:
                     {
                         DecoderUserInfo(resultString);
@@ -121,60 +117,53 @@ namespace RenrenSDKLibrary
                 DownloadStringCompleted);
         }
 
-        /// <summary>
-        /// 获取Access Token
-        /// </summary>
-        /// <param name="authorizationCode"></param>
-        public void GetAccessToken(string authorizationCode)
-        {
-            loginRequest.GetAccessToken(authorizationCode, ConstantValue.Redirect_Uri,
-                     DownloadStringCompleted);
-            currentState = TLoginState.KGetToken;
-        }
-        #endregion
 
         /// <summary>
-        /// 解析token信息
+        /// 客户端授权保存token信息
+        /// </summary>
+        /// <param name="authorizationCode"></param>
+        public void SaveAccessToken(string accessToken, string expiresIn)
+        {
+            tokenInfo = new TokenInfo();
+            tokenInfo.access_token = accessToken;
+            tokenInfo.expires_in = DateTime.Now.AddSeconds(Int32.Parse(expiresIn));
+
+            currentState = TLoginState.KGetUserInfo;
+            RenrenSDK.RenrenInfo.SetTokenInfo(tokenInfo);
+            GetCurrentUserInfo();
+        }
+
+        /// <summary>
+        /// password flow授权解析token信息
         /// </summary>
         /// <param name="result">数据</param>
         private void DecoderTokenInfo(string result)
         {
-            userInfo.user_Token = new TokenInfo();
+            AccessToken token = new AccessToken();
             try
             {
-                userInfo.user_Token = (TokenInfo)JsonUtility.DeserializeObj(
-                new MemoryStream(Encoding.UTF8.GetBytes(result)), typeof(TokenInfo));
+                token = (AccessToken)JsonUtility.DeserializeObj(
+                new MemoryStream(Encoding.UTF8.GetBytes(result)), typeof(AccessToken));
             }
             catch
             {
                 NotifyError("encoding error");
                 return;
             }
-            currentState = TLoginState.KGetSessionKey;
-            loginRequest.GetSessionKey(userInfo.user_Token.access_token,
-                    DownloadStringCompleted);
+
+            tokenInfo = new TokenInfo();
+            tokenInfo.access_token = token.access_token;
+            tokenInfo.expires_in = DateTime.Now.AddSeconds(Int32.Parse(token.expires_in));
+            tokenInfo.refresh_token = token.refresh_token;
+            tokenInfo.scope = token.scope;
+
+            currentState = TLoginState.KGetUserInfo;
+            RenrenSDK.RenrenInfo.SetTokenInfo(tokenInfo);
+            GetCurrentUserInfo();
         }
 
-        /// <summary>
-        /// 解析sessionkey
-        /// </summary>
-        /// <param name="result">数据</param>
-        private void DecoderSessionKey(string result)
-        {
-            userInfo.user_Session = new Sessioninfo();
-            try
-            {
-                userInfo.user_Session = (Sessioninfo)JsonUtility.DeserializeObj(
-                    new MemoryStream(Encoding.UTF8.GetBytes(result)), typeof(Sessioninfo));
-            }
-            catch
-            {
-                NotifyError("encoding error");
-                return;
-            }
-            RenrenSDK.RenrenInfo.SetUserInfo(userInfo);
-            GetCurrentUserInfo(userInfo.user_Session.user.id);
-        }
+
+        #endregion
 
         /// <summary>
         /// 解析用户信息
@@ -207,7 +196,7 @@ namespace RenrenSDKLibrary
         /// <summary>
         /// 获取当前用户信息
         /// </summary>
-        private void GetCurrentUserInfo(int userId)
+        private void GetCurrentUserInfo()
         {
             GetUserInfoRequest getcuruserinfoRequest = new GetUserInfoRequest();
             List<string> scope = new List<string>();
@@ -225,9 +214,8 @@ namespace RenrenSDKLibrary
             scope.Add("hometown_location");
             scope.Add("work_history");
             scope.Add("university_history");
-            List<int> sArray = new List<int>() { userId };
             currentState = TLoginState.KGetUserInfo;
-            getcuruserinfoRequest.GetUserInfo(sArray, scope, DownloadStringCompleted);
+            getcuruserinfoRequest.GetUserInfo(scope, DownloadStringCompleted);
         }
 
         /// <summary>

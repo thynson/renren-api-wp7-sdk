@@ -40,14 +40,14 @@ namespace RenrenSDKLibrary
         /// <summary>
         /// 创建相册
         /// </summary>
-        public void CreateAlbum(string sessionKey, string userSecretKey, string name, string caption, string location)
+        public void CreateAlbum(string name, string caption, string location)
         {
             if (ConstantValue.ApiKey == null)
             {
                 NotifyError("we need apiKey ");
                 return;
             }
-            createAlbumRequest.CreanteAlbum(sessionKey, userSecretKey, name, caption, location, DownloadStringCompleted);
+            createAlbumRequest.CreateAlbum(name, caption, location, DownloadStringCompleted);
         }
 
         public void CleanCreatAlbumEvent()

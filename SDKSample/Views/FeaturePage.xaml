@@ -142,7 +142,19 @@
                 </ListBox>
             </controls:PivotItem>
 
-
+            <controls:PivotItem Header="通用API调用">
+                <!--Triple line list no text wrapping-->
+                <ListBox x:Name="RestAPIListBox" Margin="0,0,-12,0" ItemsSource="{Binding RestAPIInfo}" SelectionChanged="RestAPIListBox_SelectionChanged" Height="627">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="0,0,0,17">
+                                <TextBlock Text="{Binding LineOne}" TextWrapping="NoWrap" Margin="12,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" Foreground ="#015EAC"/>
+                                <TextBlock Text="{Binding LineTwo}" TextWrapping="NoWrap" Margin="12,-6,0,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground ="#015EAC"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </controls:PivotItem>
 
         </controls:Pivot>
 
@@ -152,6 +164,7 @@
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar Mode="Minimized" IsVisible="True" Opacity ="0" ForegroundColor="#015EAC"   IsMenuEnabled="False">
             <shell:ApplicationBarIconButton IconUri="/Resource/Images/appbar.edit.rest.png" Text="Log" Click="Log_Btn_Clicked"/>
+            <shell:ApplicationBarIconButton IconUri="/Resource/Images/appbar.cancel.rest.png" Text="登出" Click="LogOut_Btn_Clicked"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

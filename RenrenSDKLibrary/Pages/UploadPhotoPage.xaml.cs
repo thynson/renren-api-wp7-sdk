@@ -42,7 +42,7 @@ namespace RenrenSDKLibrary
 
         void FastUploadPage_Loaded(object sender, RoutedEventArgs e)
         {
-            if (RenrenSDK.RenrenInfo.userInfo.session_key == null)
+            if (RenrenSDK.RenrenInfo.tokenInfo.access_token == null)
             {
                 if (loginViewBS == null)
                 {

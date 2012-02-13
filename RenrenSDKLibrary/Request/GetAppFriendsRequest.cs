@@ -35,14 +35,16 @@ namespace RenrenSDKLibrary
         /// <param name="v">API的版本号，固定值为1.0</param>
         public void GetAppFriends(List<string> scope, DownloadStringCompletedHandler callback)
         {
+            string accessToken = RenrenSDK.RenrenInfo.tokenInfo.access_token;
+            string callID = String.Format("{0}", DateTime.Now.Second);
+
             List<APIParameter> parameters = new List<APIParameter>() { 
                 new APIParameter("method",Method.GetAppFriends)
             };
-            parameters.Add(new APIParameter("api_key", ConstantValue.ApiKey));
-            parameters.Add(new APIParameter("secret_key", ConstantValue.SecretKey));
+            parameters.Add(new APIParameter("access_token", accessToken));
+            parameters.Add(new APIParameter("call_id", callID));
             parameters.Add(new APIParameter("v", "1.0"));
-            parameters.Add(new APIParameter("session_key", RenrenSDK.RenrenInfo.userInfo.session_key));
-            parameters.Add(new APIParameter("userId", RenrenSDK.RenrenInfo.userInfo.id.ToString()));
+            parameters.Add(new APIParameter("userId", RenrenSDK.RenrenInfo.detailInfo.uid.ToString()));
             parameters.Add(new APIParameter("format", "JSON"));
             if (scope != null && scope.Count > 0)
             {

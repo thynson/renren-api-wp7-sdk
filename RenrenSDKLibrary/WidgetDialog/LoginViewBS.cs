@@ -65,7 +65,7 @@ namespace RenrenSDKLibrary.WidgetDialog
             }
 
             string uri = ConstantValue.LoginAuth;
-            uri += "client_id=" + ConstantValue.ApiKey + "&" + "response_type=code";
+            uri += "client_id=" + ConstantValue.ApiKey + "&" + "response_type=token";
 
             if (scope != null && scope.Count > 0)
             {
@@ -110,19 +110,24 @@ namespace RenrenSDKLibrary.WidgetDialog
         private void RenrenBrowser_LoadCompleted(object sender,
             NavigatingEventArgs e)
         {
-            string code = getQuerystring(new Uri(e.Uri.ToString()), "code");
-            if (code != "")
+            string redirect_uri = "http://" + e.Uri.Host + e.Uri.AbsolutePath;
+            if (redirect_uri == ConstantValue.Redirect_Uri)
             {
-                loginBS.GetAccessToken(code); 
-            }
-            string error = getQuerystring(new Uri(e.Uri.ToString()), "error");
-            if (error == "login_denied")
-            {
-                RemoveBrowser();
-            }
-            else if (error != "")
-            {
-                NotifyLoginError(error);
+                string accessToken = ApiHelper.GetQueryString(new Uri(e.Uri.ToString()), "access_token");
+                if (accessToken != "")
+                {
+                    string expiresIn = ApiHelper.GetQueryString(new Uri(e.Uri.ToString()), "expires_in");
+                    loginBS.SaveAccessToken(accessToken, expiresIn);
+                }
+                string error = ApiHelper.GetQueryString(new Uri(e.Uri.ToString()), "error");
+                if (error == "login_denied")
+                {
+                    RemoveBrowser();
+                }
+                else if (error != "")
+                {
+                    NotifyLoginError(error);
+                }
             }
         }
 
@@ -153,8 +158,7 @@ namespace RenrenSDKLibrary.WidgetDialog
             {
                 System.Windows.Deployment.Current.Dispatcher.BeginInvoke(delegate()
                 {
-                    LoginCompleted(this,
-                        new LoginCompletedEventArgs(new Exception(msg)));
+                    LoginCompleted(this,new LoginCompletedEventArgs(new Exception(msg)));
                 });
             }
             RemoveBrowser();

@@ -25,9 +25,9 @@ namespace RenrenSDKLibrary
         /// <param name="sessionKey"></param>
         /// <param name="userSecretKey"></param>
         /// <param name="userId"></param>
-        public void CreanteAlbum(string sessionKey, string userSecretKey, string name, DownloadStringCompletedHandler callback)
+        public void CreateAlbum(string sessionKey, string name, DownloadStringCompletedHandler callback)
         {
-            CreanteAlbum(sessionKey,userSecretKey,name,string.Empty,string.Empty, callback);
+            CreateAlbum(name,string.Empty,string.Empty, callback);
         }
 
         /// <summary>
@@ -36,14 +36,16 @@ namespace RenrenSDKLibrary
         /// <param name="sessionKey"></param>
         /// <param name="userSecretKey"></param>
         /// <param name="userId"></param>
-        public void CreanteAlbum(string sessionKey, string userSecretKey, string name, string description, string location, DownloadStringCompletedHandler callback)
+        public void CreateAlbum(string name, string description, string location, DownloadStringCompletedHandler callback)
         {
+            string accessToken = RenrenSDK.RenrenInfo.tokenInfo.access_token;
+            string callID = String.Format("{0}", DateTime.Now.Second);
+
             List<APIParameter> parameters = new List<APIParameter>();
-            parameters.Add(new APIParameter("api_key", ConstantValue.ApiKey));
-            parameters.Add(new APIParameter("secret_key", userSecretKey));
+            parameters.Add(new APIParameter("access_token", accessToken));
+            parameters.Add(new APIParameter("call_id", callID));
             parameters.Add(new APIParameter("method", Method.CreateAlbum));
             parameters.Add(new APIParameter("v", "1.0"));
-            parameters.Add(new APIParameter("session_key", sessionKey));
             parameters.Add(new APIParameter("name", name));
             parameters.Add(new APIParameter("format", "JSON"));
             if (!string.IsNullOrEmpty(description))

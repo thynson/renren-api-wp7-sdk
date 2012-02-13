@@ -1,5 +1,5 @@
-﻿//  Copyright 2011年 Renren Inc. All rights reserved.
-//  - Powered by Team Pegasus. -
+﻿//  Copyright 2012年 Renren Inc. All rights reserved.
+//  - Powered by Open Platform. -
 
 using System;
 using System.Net;
@@ -21,19 +21,19 @@ using System.Collections.Generic;
 
 namespace RenrenSDKLibrary.WidgetDialog
 {
-    public class NewfeedWidgetDialog : WidgetDialog
+    public class WidgetAPIRequestBS : WidgetDialog
     {
- 
+
         #region public function
         /// <summary>
         /// 显示dialog
         /// </summary>
         /// <param name="requiredParam"></param>
         /// <param name="optionalParam"></param>
-        public void RunDialog(NewfeedDialogRequired requiredParam, 
-            NewfeedDialogOptional optionalParam)
+        public void RunDialog(String dialogType,
+            List<APIParameter> param)
         {
-            if (requiredParam == null || requiredParam.HasEmptyMember())
+            if (param == null)
             {
                 return;
             }
@@ -43,34 +43,22 @@ namespace RenrenSDKLibrary.WidgetDialog
                  new BrowserControl.LoadCompletedEventHandler(RenrenBrowser_LoadCompleted);
 
             string uri = ConstantValue.WidgetDialog;
-            uri += "feed?" +
-                "ua=cb02a891540976afd5b1b42413fb83af" +
-                "&app_id=" + requiredParam.app_id +
-                "&url=" + requiredParam.url +
-                "&redirect_uri=" + requiredParam.redirect_uri +
-                "&name=" + requiredParam.name +
-                "&description=" + requiredParam.description +
-                "&display=" + "touch";
-            string optionUri = null ;
-            if (optionalParam != null)
+            uri += dialogType + "?";
+            uri += "ua=b3d8ed7827b219321125b55d789b7f22";
+            uri += "&display=touch";
+            uri += "&app_id=" + ConstantValue.AppID;
+            uri += "&redirect_uri=" + ConstantValue.WidgetRedirect_Uri;
+
+            foreach(APIParameter customParam in param )
             {
-                if (optionalParam.action_link != null)
-                    optionUri += "&action_link=" + optionalParam.action_link;
-                if (optionalParam.action_name != null)
-                    optionUri += "&action_name=" + optionalParam.action_name;
-                if (optionalParam.caption != null)
-                    optionUri += "&caption=" + optionalParam.caption;
-                if (optionalParam.image != null)
-                    optionUri += "&image=" + optionalParam.image;
+                uri += "&" + customParam.Name + "=" + customParam.Value;
             }
-            if (RenrenSDK.RenrenInfo.userInfo.scope != null)
+
+            if (RenrenSDK.RenrenInfo.tokenInfo.access_token != null)
             {
-                if (RenrenSDK.RenrenInfo.userInfo.scope.Contains("publish_feed"))
-                {
-                    uri += "&access_token=" + RenrenSDK.RenrenInfo.userInfo.access_token;
-                }
-            } 
-            uri += optionUri;
+                uri += "&access_token=" + RenrenSDK.RenrenInfo.tokenInfo.access_token;
+            }
+
             if (browserControl != null)
             {
                 browserControl.SetUri(uri);
@@ -91,7 +79,7 @@ namespace RenrenSDKLibrary.WidgetDialog
         private void RenrenBrowser_LoadCompleted(object sender,
             NavigatingEventArgs e)
         {
-            string error = getQuerystring(new Uri(e.Uri.ToString()), "error");
+            string error = ApiHelper.GetQueryString(new Uri(e.Uri.ToString()), "error");
             if (error == "access_denied")
             {
                 RemoveBrowser();
@@ -104,8 +92,8 @@ namespace RenrenSDKLibrary.WidgetDialog
             {
                 NotifyError(error);
             }
-            string flag = getQuerystring(new Uri(e.Uri.ToString()), "flag");
-            if(flag == "success")
+            string flag = ApiHelper.GetQueryString(new Uri(e.Uri.ToString()), "flag");
+            if (flag == "success")
             {
                 NotifyMessage(flag);
             }

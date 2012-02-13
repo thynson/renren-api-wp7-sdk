@@ -36,11 +36,13 @@ namespace RenrenSDKLibrary
             { 
                 new APIParameter("method","users.getLoggedInUser")//获取当前用户ID
             };
-            string key = RenrenSDK.RenrenInfo.userInfo.session_key;
+            string accessToken = RenrenSDK.RenrenInfo.tokenInfo.access_token;
+            string callID = String.Format("{0}",DateTime.Now.Second);
+
             //添加其他参数
-            parameters.Add(new APIParameter("api_key", ConstantValue.ApiKey));
             parameters.Add(new APIParameter("v", "1.0"));
-            parameters.Add(new APIParameter("session_key", key));
+            parameters.Add(new APIParameter("access_token", accessToken));
+            parameters.Add(new APIParameter("call_id", callID));
             parameters.Add(new APIParameter("format", "JSON"));
 
             //生成并添加sig参数

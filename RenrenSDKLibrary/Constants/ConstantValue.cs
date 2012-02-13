@@ -1,5 +1,5 @@
-﻿//  Copyright 2011年 Renren Inc. All rights reserved.
-//  - Powered by Team Pegasus. -
+﻿//  Copyright 2012年 Renren Inc. All rights reserved.
+//  - Powered by Open Platform. -
 
 using System;
 using System.Net;
@@ -16,10 +16,13 @@ namespace RenrenSDKLibrary
 {
     public class ConstantValue
     {
-        //ApiKey SecretKey后续需要删除
-        public static string ApiKey = "5c825fb9b30c494cb48e674e21139f20";
+        //ApiKey
+        public static string ApiKey = "";
+        //AppID
+        public static string AppID = "";
+        //Secret
+        public static string SecretKey = "";
 
-        public static string SecretKey = "510991aed48945e4ae48f4481b33859c";
         //授权验证Uri
         public static Uri OAuthUri = new Uri("https://graph.renren.com/oauth/token", UriKind.Absolute);
         //开放平台Uri
@@ -29,9 +32,9 @@ namespace RenrenSDKLibrary
 
         public static string LoginAuth = "https://graph.renren.com/oauth/authorize?";
 
-        public static string SessionURL = "https://graph.renren.com/renren_api/session_key";
-
         public static string WidgetDialog = "http://widget.renren.com/dialog/";
+
+        public static string WidgetRedirect_Uri = "http://widget.renren.com/callback.html";
 
         public static string PostMethod = "POST";
 

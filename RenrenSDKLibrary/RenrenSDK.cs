@@ -1,5 +1,5 @@
-﻿//  Copyright 2011年 Renren Inc. All rights reserved.
-//  - Powered by Team Pegasus. -
+﻿//  Copyright 2012年 Renren Inc. All rights reserved.
+//  - Powered by Open Platform. -
 
 using System;
 using System.Net;
@@ -32,17 +32,20 @@ namespace RenrenSDKLibrary
         GetUserInfoBS getUserInfoBS;
         GetAlbumsBS getAlbumsBS;
         CreateAlbumBS createAlbumBS;
-        NewfeedWidgetDialog newfeedDialog;
-        LikeWidgetDialog LikeDialog;
         public static BitmapImage publishPhoto;//通过api传进来的照片
+
+        APIRequestBS apiRequestBS;
+        WidgetAPIRequestBS widgetAPIRequestBS;
 
         /// <summary>
         /// 构造
         /// </summary>
         /// <param name="apiKey"></param>
-        public RenrenSDK(string apiKey)
+        public RenrenSDK(string appID, string apiKey, string secretKey)
         {
-            ConstantValue.ApiKey = apiKey;            
+            ConstantValue.AppID = appID;
+            ConstantValue.ApiKey = apiKey;
+            ConstantValue.SecretKey = secretKey; 
             friendBS = new FriendBS();
             getUserInfoBS = new GetUserInfoBS();
         }
@@ -59,9 +62,8 @@ namespace RenrenSDKLibrary
             getUserInfoBS = null;
             getAlbumsBS = null;
             createAlbumBS = null;
+            apiRequestBS = null;
             RenrenInfo.CleanUp();
-            newfeedDialog = null;
-            LikeDialog = null;
         }
 
         /// <summary>
@@ -69,12 +71,11 @@ namespace RenrenSDKLibrary
         /// </summary>
         /// <param name="username">用户名</param>
         /// <param name="password">密码</param>
-        /// <param name="secretKey">应用程序secretkey</param>
         /// <param name="callback">回调</param>
-        public void LogIn(string username, string password, string secretKey,
+        public void LogIn(string username, string password,
             LoginCompletedHandler callback)
         {
-             LogIn(username, password, secretKey,null, callback);
+             LogIn(username, password, null, callback);
         }
 
         /// <summary>
@@ -85,16 +86,15 @@ namespace RenrenSDKLibrary
         /// <param name="secretKey">应用程序secretkey</param>
         /// <param name="scope">权限列表</param>
         /// <param name="callback">回调</param>
-        public void LogIn(string username, string password, string secretKey,
+        public void LogIn(string username, string password,
             List<string> scope, LoginCompletedHandler callback)
         {
-            ConstantValue.SecretKey = secretKey;
             if (loginBS == null)
             {
                 loginBS = new LoginBS();
             }
             loginBS.CleanLoginEvent();
-            loginBS.LoginCompleted += callback; 
+            loginBS.LoginCompleted += callback;
 
             loginBS.LogIn(username, password, scope);
         }
@@ -125,7 +125,7 @@ namespace RenrenSDKLibrary
             }
 
             loginViewBS.CleanLoginEvent();
-            loginViewBS.LoginCompleted += callback; 
+            loginViewBS.LoginCompleted += callback;
 
             loginViewBS.InitView(page);
             loginViewBS.Login(redirectUri, scope);
@@ -231,8 +231,7 @@ namespace RenrenSDKLibrary
 
              getAlbumsBS.CleanGetAlbumsEvent();
              getAlbumsBS.GetAlbumsCompleted += callback;
-             getAlbumsBS.GetAlbums(RenrenInfo.userInfo.session_key, RenrenInfo.userInfo.session_secret,
-                    RenrenInfo.userInfo.id, page, count, aids);
+             getAlbumsBS.GetAlbums(RenrenInfo.detailInfo.uid, page, count, aids);
          }
 
          /// <summary>
@@ -246,8 +245,7 @@ namespace RenrenSDKLibrary
              }
              createAlbumBS.CleanCreatAlbumEvent();
              createAlbumBS.CreateAlbumCompleted += callback;
-             createAlbumBS.CreateAlbum(RenrenInfo.userInfo.session_key, 
-                    RenrenInfo.userInfo.session_secret, name, description, location);
+             createAlbumBS.CreateAlbum(name, description, location);
          }
          /// <summary>
          /// 照片一键上传
@@ -348,53 +346,56 @@ namespace RenrenSDKLibrary
         }
 
         /// <summary>
-        /// 可以发送自定义新鲜事的widget
+        /// 通用API接口的调用方法。 
         /// </summary>
-        /// <param name="page">当前页面</param>
-        /// <param name="requiredParam">必须的参数</param>
-        /// <param name="optionalParam">可选的参数</param>
-        /// <param name="callback">回调</param>
-        public void NewFeedWidgetDialog(PhoneApplicationPage page, NewfeedDialogRequired requiredParam,
-            NewfeedDialogOptional optionalParam, 
-            RenrenSDKLibrary.WidgetDialog.NewfeedWidgetDialog.DownloadStringCompletedHandler callback)
+        /// <param name="callback">回调，返回JSON数据 </param>
+        /// <param name="param">传入请求API接口所需要的参数</param>
+        public void RequestAPIInterface(APIRequestCompletedHandler callback, List<APIParameter> param)
         {
-            if (newfeedDialog == null)
+            if (apiRequestBS == null)
             {
-                newfeedDialog = new NewfeedWidgetDialog();
+                apiRequestBS = new APIRequestBS();
             }
 
-            if (callback != null)
-            {
-                newfeedDialog.CleanDownloadStringEvent();
-                newfeedDialog.DownloadStringCompleted += callback;
-            }
-
-            newfeedDialog.InitView(page);
-            newfeedDialog.RunDialog(requiredParam, optionalParam);
+            apiRequestBS.ClearAPIRequestEvent();
+            apiRequestBS.APIRequestCompleted += callback;
+            apiRequestBS.GetAPIRequestData(param);
         }
 
         /// <summary>
-        /// like dialog提供了人人喜欢另一种实现，使人人喜欢可以应用在多种终端。 
+        /// 通用WidgetAPI调用方法
         /// </summary>
         /// <param name="page">当前页面</param>
-        /// <param name="like_url">被喜欢页面的url</param>
+        /// <param name="dialogType">WidgetDialog的类型</param>
+        /// <param name="param">请求的参数</param>
         /// <param name="callback">回调</param>
-        public void LikeWidgetDialog(PhoneApplicationPage page, string like_url, string app_id,
-            RenrenSDKLibrary.WidgetDialog.LikeWidgetDialog.DownloadStringCompletedHandler callback)
+        public void WidgetDialog(PhoneApplicationPage page, string dialogType, List<APIParameter> param,
+            RenrenSDKLibrary.WidgetDialog.WidgetAPIRequestBS.DownloadStringCompletedHandler callback = null)
         {
-            if (LikeDialog == null)
+            if (widgetAPIRequestBS == null)
             {
-                LikeDialog = new LikeWidgetDialog();
+                widgetAPIRequestBS = new WidgetAPIRequestBS();
             }
 
             if (callback != null)
             {
-                LikeDialog.CleanDownloadStringEvent();
-                LikeDialog.DownloadStringCompleted += callback;
+                widgetAPIRequestBS.CleanDownloadStringEvent();
+                widgetAPIRequestBS.DownloadStringCompleted += callback;
             }
 
-            LikeDialog.InitView(page);
-            LikeDialog.RunDialog(like_url, app_id);
+            widgetAPIRequestBS.InitView(page);
+            widgetAPIRequestBS.RunDialog(dialogType, param);
+        }
+
+        /// <summary>
+        /// 判断用户授权状态的方法
+        /// </summary>
+        /// <param name="scope">权限列表</param>
+        /// <return>用户授权是否有效</return>
+        public bool IsAccessTokenValid()
+        {
+            return (RenrenInfo.tokenInfo.access_token != null && RenrenInfo.tokenInfo.expires_in != null
+                && (DateTime.Now.CompareTo(RenrenInfo.tokenInfo.expires_in) < 0));
         }
     }
 }

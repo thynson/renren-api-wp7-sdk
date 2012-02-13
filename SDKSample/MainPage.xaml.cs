@@ -33,19 +33,51 @@ namespace SDKSample
 
         private void Authored_Btn_Click(object sender, RoutedEventArgs e)
         {
-            List<string> scope = new List<string> { "publish_feed" };
-            api.Login(this,scope, renren_LoginCompletedHandler);
+            if(api.IsAccessTokenValid())
+            {
+                NavigationService.Navigate(new Uri("/Views/FeaturePage.xaml", UriKind.Relative));
+            }
+            else
+            {
+                api.Login(this, renren_LoginCompletedHandler);
+            }
         }
 
         private void ExtentAuthored_Btn_Click(object sender, RoutedEventArgs e)
         {
-            api.Login(this, renren_LoginCompletedHandler);
+            List<string> scope = new List<string> { "publish_feed", "publish_blog", "read_user_album", "create_album", "photo_upload" };
+            if (api.IsAccessTokenValid())
+            {
+                NavigationService.Navigate(new Uri("/Views/FeaturePage.xaml", UriKind.Relative));
+            }
+            else
+            {
+                api.Login(this, scope, renren_LoginCompletedHandler);
+            }
         }
 
         private void NameAndPaswd_Btn_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new Uri("/Views/LoginPage.xaml", UriKind.Relative));
-            //NavigationService.Navigate(new Uri("/Views/FeaturePage.xaml", UriKind.Relative));
+            if (api.IsAccessTokenValid())
+            {
+                NavigationService.Navigate(new Uri("/Views/FeaturePage.xaml", UriKind.Relative));
+            }
+            else
+            {
+                NavigationService.Navigate(new Uri("/Views/LoginPage.xaml", UriKind.Relative));
+            }
+        }
+
+        private void WebControl_Btn_Click(object sender, RoutedEventArgs e)
+        {
+            if (api.IsAccessTokenValid())
+            {
+                NavigationService.Navigate(new Uri("/Views/FeaturePage.xaml", UriKind.Relative));
+            }
+            else
+            {
+                NavigationService.Navigate(new Uri("/Views/WebControlLoginPage.xaml", UriKind.Relative));
+            }
         }
 
         public void renren_LoginCompletedHandler(object sender, LoginCompletedEventArgs e)

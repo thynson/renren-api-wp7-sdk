@@ -62,7 +62,13 @@
     <Reference Include="mscorlib.extensions" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Business\APIRequestBS.cs" />
     <Compile Include="Business\BusinessBase.cs" />
+    <Compile Include="Constants\WidgetDialogType.cs" />
+    <Compile Include="CustomControls\OauthControl.xaml.cs">
+      <DependentUpon>OauthControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EventArgs\APIRequestCompletedEventArgs.cs" />
     <Compile Include="Helper\APIParameter.cs" />
     <Compile Include="Helper\MD5Encry.cs" />
     <Compile Include="Business\CreateAlbumBS.cs" />
@@ -70,16 +76,16 @@
     <Compile Include="Business\GetAlbumsBS.cs" />
     <Compile Include="Business\GetUserInfoBS.cs" />
     <Compile Include="Business\LoginBS.cs" />
-    <Compile Include="Model\WidgetDialogInfo.cs" />
+    <Compile Include="Model\AccessToken.cs" />
     <Compile Include="Pages\UploadPhotoPage.xaml.cs">
       <DependentUpon>UploadPhotoPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WidgetDialog\LikeWidgetDialog.cs" />
+    <Compile Include="Request\APIRequest.cs" />
     <Compile Include="WidgetDialog\LoginViewBS.cs" />
     <Compile Include="Business\UploadPhotoBS.cs" />
     <Compile Include="Constants\ConstantValue.cs" />
     <Compile Include="Constants\Method.cs" />
-    <Compile Include="Controls\BrowserControl.xaml.cs">
+    <Compile Include="Browser\BrowserControl.xaml.cs">
       <DependentUpon>BrowserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="EventArgs\CreateAlbumCompletedEventArgs.cs" />
@@ -118,7 +124,7 @@
     <Compile Include="Request\UploadPhotoRequest.cs" />
     <Compile Include="EventArgs\DownloadStringCompletedEventArgs.cs" />
     <Compile Include="WebRequest\RenrenWebRequest.cs" />
-    <Compile Include="WidgetDialog\NewfeedWidgetDialog.cs" />
+    <Compile Include="WidgetDialog\WidgetAPIRequestBS.cs" />
     <Compile Include="WidgetDialog\WidgetDialog.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -127,7 +133,11 @@
     <Resource Include="Images\renren-logo-top-bar.png" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\BrowserControl.xaml">
+    <Page Include="Browser\BrowserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\OauthControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

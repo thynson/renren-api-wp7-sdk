@@ -37,14 +37,16 @@ namespace RenrenSDKLibrary
         /// <param name="page">分页，默认为1</param>
         public void GetFriends(DownloadStringCompletedHandler callback,List<string> scope, int count ,int page)
         {
+            string accessToken = RenrenSDK.RenrenInfo.tokenInfo.access_token;
+            string callID = String.Format("{0}", DateTime.Now.Second);
+
             List<APIParameter> parameters = new List<APIParameter>() { 
                 new APIParameter("method",Method.GetFriends)
             };
-            parameters.Add(new APIParameter("api_key", ConstantValue.ApiKey));
-            parameters.Add(new APIParameter("secret_key", ConstantValue.SecretKey));
+            parameters.Add(new APIParameter("access_token", accessToken));
+            parameters.Add(new APIParameter("call_id", callID));
             parameters.Add(new APIParameter("v", "1.0"));
-            parameters.Add(new APIParameter("session_key", RenrenSDK.RenrenInfo.userInfo.session_key));
-            parameters.Add(new APIParameter("userId", RenrenSDK.RenrenInfo.userInfo.id.ToString()));
+            parameters.Add(new APIParameter("userId", RenrenSDK.RenrenInfo.detailInfo.uid.ToString()));
             parameters.Add(new APIParameter("format", "JSON"));
             parameters.Add(new APIParameter("page", page.ToString()));
             if (count != 500) parameters.Add(new APIParameter("count", count.ToString()));

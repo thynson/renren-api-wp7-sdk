@@ -1,5 +1,5 @@
-﻿//  Copyright 2011年 Renren Inc. All rights reserved.
-//  - Powered by Team Pegasus. -
+﻿//  Copyright 2012年 Renren Inc. All rights reserved.
+//  - Powered by Open Platform. -
 
 using System;
 using System.Net;
@@ -24,9 +24,9 @@ namespace RenrenSDKLibrary
         RenrenSDK rrSDK;
 
         // Constructor
-        public RenrenAPI( string apiKey )
+        public RenrenAPI(string appID, string apiKey, string secretKey)
         {
-            rrSDK = new RenrenSDK(apiKey);
+            rrSDK = new RenrenSDK(appID, apiKey, secretKey);
         }
 
         /// <summary>
@@ -42,12 +42,11 @@ namespace RenrenSDKLibrary
         /// </summary>
         /// <param name="username">用户名</param>
         /// <param name="password">密码</param>
-        /// <param name="secretKey">应用程序secretkey</param>
         /// <param name="callback">回调</param>
-        public void Login(string username, string password, string secretKey,
+        public void Login(string username, string password,
             LoginCompletedHandler callback)
         {
-            rrSDK.LogIn(username, password, secretKey, callback);
+            rrSDK.LogIn(username, password, callback);
         }
 
         /// <summary>
@@ -55,13 +54,12 @@ namespace RenrenSDKLibrary
         /// </summary>
         /// <param name="username">用户名</param>
         /// <param name="password">密码</param>
-        /// <param name="secretKey">应用程序secretkey</param>
         /// <param name="scope">权限列表</param>
         /// <param name="callback">回调</param>
-        public void Login(string username, string password, string secretKey,
+        public void Login(string username, string password,
             List<string> scope, LoginCompletedHandler callback)
         {
-            rrSDK.LogIn(username, password, secretKey, scope, callback);
+            rrSDK.LogIn(username, password, scope, callback);
         }
 
         /// <summary>
@@ -244,29 +242,35 @@ namespace RenrenSDKLibrary
         }
 
         /// <summary>
-        /// 可以发送自定义新鲜事的widget
+        /// 通用API接口调用方法
         /// </summary>
-        /// <param name="page">当前页面</param>
-        /// <param name="requiredParam">必须的参数</param>
-        /// <param name="optionalParam">可选的参数</param>
-        /// <param name="callback">回调</param>
-        public void FeedDialog(PhoneApplicationPage page, NewfeedDialogRequired requiredParam,
-            NewfeedDialogOptional optionalParam = null,
-            RenrenSDKLibrary.WidgetDialog.NewfeedWidgetDialog.DownloadStringCompletedHandler callback = null)
+        /// <param name="callback">回调，返回JSON数据 </param>
+        /// <param name="param">传入请求API接口所需要的参数</param>
+        public void RequestAPIInterface(APIRequestCompletedHandler callback, List<APIParameter> param)
         {
-            rrSDK.NewFeedWidgetDialog(page, requiredParam, optionalParam,callback);
+            rrSDK.RequestAPIInterface(callback, param);
         }
 
         /// <summary>
-        /// like dialog提供了人人喜欢另一种实现，使人人喜欢可以应用在多种终端。 
+        /// 通用WidgetAPI调用方法
         /// </summary>
         /// <param name="page">当前页面</param>
-        /// <param name="like_url">被喜欢页面的url</param>
+        /// <param name="dialogType">WidgetDialog的类型</param>
+        /// <param name="param">请求的参数</param>
         /// <param name="callback">回调</param>
-        public void LikeDialog(PhoneApplicationPage page, string like_url, string app_id,
-            RenrenSDKLibrary.WidgetDialog.LikeWidgetDialog.DownloadStringCompletedHandler callback = null)
+        public void WidgetDialog(PhoneApplicationPage page, string dialogType, List<APIParameter> param,
+            RenrenSDKLibrary.WidgetDialog.WidgetAPIRequestBS.DownloadStringCompletedHandler callback = null)
         {
-            rrSDK.LikeWidgetDialog(page, like_url, app_id, callback);
+            rrSDK.WidgetDialog(page, dialogType, param, callback);
+        }
+
+        /// <summary>
+        /// 判断用户授权状态的方法
+        /// </summary>
+        /// <return>用户授权是否有效</return>
+        public bool IsAccessTokenValid()
+        {
+            return rrSDK.IsAccessTokenValid();
         }
     }
 }
