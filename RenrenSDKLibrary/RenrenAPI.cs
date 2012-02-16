@@ -76,7 +76,7 @@ namespace RenrenSDKLibrary
         /// </summary>
         /// <param name="page">当前显示页面</param>
         /// <param name="scope">权限列表</param>
-        /// <param name="redirectUri">转向</param>
+        /// <param name="callback">回调</param>
         public void Login(PhoneApplicationPage page, List<string> scope,
             LoginCompletedHandler callback)
         {
@@ -121,8 +121,6 @@ namespace RenrenSDKLibrary
         /// <summary>
         /// 获取App好友列表，带Scope参数列表
         /// </summary>
-        /// <param name="sessionkey">当前用户的session_key</param>
-        /// <param name="userid">当前用户的id</param>
         /// <param name="scope">目前支持name（姓名）、tinyurl(小头像)、headurl（中等头像）</param>
         /// <param name="callback">回调，返回 ObservableCollection<AppFriend> </param>
         public void GetAppFriends(List<string> scope, GetAppFriendsCompletedHandler callback)
@@ -133,8 +131,6 @@ namespace RenrenSDKLibrary
         /// <summary>
         /// 获取App好友列表，不带Scope参数列表
         /// </summary>
-        /// <param name="sessionkey">当前用户的session_key</param>
-        /// <param name="userid">当前用户的id</param>
         /// <param name="callback">回调，返回 ObservableCollection<AppFriend> </param>
         public void GetAppFriends(GetAppFriendsIDCompletedHandler callback)
         {

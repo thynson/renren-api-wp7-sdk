@@ -83,7 +83,6 @@ namespace RenrenSDKLibrary
         /// </summary>
         /// <param name="username">用户名</param>
         /// <param name="password">密码</param>
-        /// <param name="secretKey">应用程序secretkey</param>
         /// <param name="scope">权限列表</param>
         /// <param name="callback">回调</param>
         public void LogIn(string username, string password,
@@ -104,6 +103,7 @@ namespace RenrenSDKLibrary
         /// </summary>
         /// <param name="page">当前显示页面</param>
         /// <param name="redirectUri">转向</param>
+        /// <param name="callback">回调</param>
         public void LogIn(PhoneApplicationPage page, string redirectUri,
             LoginCompletedHandler callback)
         {
@@ -116,6 +116,7 @@ namespace RenrenSDKLibrary
         /// <param name="page">当前显示页面</param>
         /// <param name="scope">权限列表</param>
         /// <param name="redirectUri">转向</param>
+        /// <param name="callback">回调</param>
         public void LogIn(PhoneApplicationPage page, List<string> scope,
             string redirectUri, LoginCompletedHandler callback)
         {
@@ -187,8 +188,6 @@ namespace RenrenSDKLibrary
          /// <summary>
          /// 获取好友App列表，带Scope参数
          /// </summary>
-         /// <param name="sessionkey">当前用户的session_key</param>
-         /// <param name="userid">当前用户的id</param>
          /// <param name="scope">参数列表</param>
          /// <param name="callback">回调</param>
          public void GetAppFriends( List<string> scope, GetAppFriendsCompletedHandler callback)
@@ -205,8 +204,6 @@ namespace RenrenSDKLibrary
          /// <summary>
          /// 获取App好友列表，不带Scope参数
          /// </summary>
-         /// <param name="sessionkey">当前用户的session_key</param>
-         /// <param name="userid">当前用户的id</param>
          /// <param name="callback">回调</param>
          public void GetAppFriends( GetAppFriendsIDCompletedHandler callback)
          {
@@ -314,7 +311,6 @@ namespace RenrenSDKLibrary
         /// <summary>
         /// 获取当前用户信息
         /// </summary>
-        /// <param name="sessionkey">当前用户的session_key</param>
         /// <param name="callback">回调</param>
         public void GetCurUserInfo(GetCurUserInfoCompletedHandler callback)
         {
@@ -390,7 +386,6 @@ namespace RenrenSDKLibrary
         /// <summary>
         /// 判断用户授权状态的方法
         /// </summary>
-        /// <param name="scope">权限列表</param>
         /// <return>用户授权是否有效</return>
         public bool IsAccessTokenValid()
         {
